@@ -29,7 +29,7 @@ Wednesday 4 June:
 Thursday 5 June:
     - add human render mode if ok for performance
     - add a collision counter
-    - checkpoint the policy and reload and render the human view after training
+    - checkpoint the policy and reload and render the human view after training [kept having errors. may revisit at a later stage but moving on for now as I want to work on a more intersting project]
     - create a video of the trained agent's behaviour
 
 
