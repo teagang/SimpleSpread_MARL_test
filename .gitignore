@@ -1,0 +1,30 @@
+# Python virtual environment
+venv/
+.venv/
+
+# Byte-compiled / optimized / DLL files
+__pycache__/ #Python's cached bytecode files. These are automatically generated and should not be committed.
+*.pyc
+*.pyd
+*.pyo
+
+# C extensions - Compiled library files often found within virtual environments
+*.so
+*.dylib
+*.dll
+
+# Editor files (VS Code specific)
+.vscode/
+
+# IDE files
+.idea/
+*.iml
+
+# OS generated files
+.DS_Store
+.localized
+Thumbs.db
+
+# Logs and databases
+*.log
+*.db
