@@ -5,7 +5,7 @@ import os
 import pandas as pd
 import matplotlib.pyplot as plt
 
-def visualize_simple_spread_data(json_filename="simple_spread_output_20250527_163010.json"):
+def visualize_simple_spread_data(json_filename="../runs/test_simple_spread/runs/simple_spread_output_20250527_163837.json"):
     """
     Loads data from a specified JSON file, processes it, and visualizes
     the reward per agent over steps for each episode.
@@ -24,10 +24,10 @@ def visualize_simple_spread_data(json_filename="simple_spread_output_20250527_16
     # from the script's directory and then into 'runs'
     prosocial_marl_dir = os.path.dirname(script_dir)
     runs_dir = os.path.join(prosocial_marl_dir, "runs") # Changed from "data" to "runs"
-    json_filepath = os.path.join(runs_dir, json_filename)
+    json_filepath = os.path.join(script_dir, "runs", json_filename)
 
     # Create the 'plots' directory if it doesn't exist (assuming it's at the same level as 'runs' and 'scripts')
-    plots_dir = os.path.join(prosocial_marl_dir, "plots")
+    plots_dir = os.path.join(script_dir, "plots")
     os.makedirs(plots_dir, exist_ok=True)
 
     try:
