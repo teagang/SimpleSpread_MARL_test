@@ -1,0 +1,61 @@
+PettingZoo is a cooperative multi-agent environment where agents must learn to cover a set of landmarks.
+    Cooperative: All agents share a common reward signal and must work together to achieve the goal. There is no individual reward.
+    Continuous Observation Space: Agents observe the positions and velocities of themselves, other agents, and the landmarks.
+    Continuous Action Space: Agents control their own movement (velocity) in a 2D plane.
+    Goal: Agents need to spread out and cover all the given landmarks. The more landmarks covered and the closer agents are to them, the higher the reward.
+    Partial Observability (configurable): While often configured for full observability, it can be set up so agents only observe a limited range around them.
+
+Reward Function:
+    In simple_spread.py:
+    reward(self, agent, world): This method calculates the individual reward for a specific agent.
+
+    rew = 0
+    if agent.collide:: If the agent is configured to collide with other agents.
+    for a in world.agents:: It iterates through all agents in the world.
+    rew -= 1.0 * (self.is_collision(a, agent) and a != agent): For each collision with another agent (that is not itself), the agent receives a penalty of -1.0.
+    return rew: The method returns the calculated individual reward.
+
+    global_reward(self, world): This method calculates a global reward based on the state of the entire world.
+
+    rew = 0
+    for lm in world.landmarks:: It iterates through each landmark in the world.
+    dists = [...]: For each landmark, it calculates the Euclidean distance from every agent to that landmark.
+    rew -= min(dists): It then finds the minimum distance to the current landmark among all agents and subtracts this minimum distance from the global reward. This means that the closer the closest agent is to a landmark, the higher (less negative) the reward. The goal is to minimize this distance, hence the subtraction.
+    return rew: The method returns the calculated global reward.
+
+    In Utilitarian Wrapper:
+    every agent receives the sum of all agents' individual rewards.
+
+    1. Original step method execution: 
+    When step is called on the UtilitarianRewardWrapper, it first executes the step method of the underlying environment (self.env.step(action)). 
+    This returns the original observations, individual rewards for each agent, terminations, truncations, and infos from the base environment.
+    2. Calculate total_step_reward: 
+    It then sums up all the individual rewards received by each agent in that step. 
+    The rewards variable is expected to be a dictionary where keys are agent_ids and values are their individual rewards. 
+    3. Distribute utilitarian_rewards: 
+    A new dictionary called utilitarian_rewards is created. 
+    In this new dictionary, for every agent, its reward is set to the total_step_reward calculated in the previous step. 
+    4. Return modified rewards: 
+    Finally, the wrapper returns the original observations, but with the utilitarian_rewards replacing the original individual rewards, 
+    along with the original terminations, truncations, and infos.
+
+PPO = Proximal Policy Optimization:
+    - a reinforcement learning algorithm that trains agents by optimizing their policies, or the strategies they use to make decisions.
+    - falls under the category of policy gradient methods, which use the gradients of the expected reward to guide policy updates. 
+    - PPO uses a clipped objective function, which limits the change in policy at each training step. 
+    This ensures that the agent doesn't make drastic changes that could harm its performance.
+How it Works:
+    -  The agent interacts with its environment, gathering data about the state, actions, and rewards
+    - PPO calculates the ratio of the new policy's action probability to the old policy's probability. 
+    This ratio is then multiplied by an advantage estimate. 
+    - The ratio is clipped within a certain range (e.g., [0.8, 1.2]) to limit the size of the policy update. 
+    - PPO optimizes the clipped surrogate objective function using gradient descent or other optimization algorithms. 
+
+
+Although the standard simple spread reward is cooperative, individual agents receive penalties for collisions.
+The global reward, which is based on the agents distances from landmarks, is shared.
+With the utilitarian wrapper, the punishments are also shared. Each agent receives the sum of all individual rewards. 
+
+
+
+

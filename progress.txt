@@ -1,0 +1,36 @@
+Tuesday 27 May:
+    Project Setup Steps
+        - Installed/confirmed Python 3.8–3.11 is available
+        - Created a project folder: prosocial_marl
+        - Created a virtual environment: python -m venv venv
+        - Activated the virtual environment:
+            Windows: venv\Scripts\activate
+            Mac/Linux: source venv/bin/activate
+        - Upgraded pip: pip install --upgrade pip
+        - Installed required libraries:
+            pip install pettingzoo stable-baselines3[extra] supersuit matplotlib
+        - Verified all libraries imported successfully
+
+Wednesday 28 May:
+    - Task 4: Run a Baseline Training with Default (Selfish) Rewards
+
+Thursday 29 May:
+    - Baseline is working.
+
+Monday 2 June:
+    - Saved the results of a baseline and a utilitarian run
+
+Tuesday 3 June:
+    - wrote out the math of the reward functions
+
+Wednesday 4 June:
+    - Generate and compare the graphs
+
+Thursday 5 June:
+    - add human render mode if ok for performance
+    - add a collision counter
+    - checkpoint the policy and reload and render the human view after training
+    - create a video of the trained agent's behaviour
+
+
+    

@@ -1,0 +1,38 @@
+For a smaller selection of relevant graphs, filter tensorbaord with regex: .*episode_reward_mean|.*policy_loss|.*vf_loss|.*entropy|.*kl|.*episode_returns_mean/agent_
+Performance Metrics (Episode Rewards)
+
+These graphs show how well your agents are performing in the environment.
+
+    ray/tune/env_runners/agent/episode_returns_mean/agent_0
+    ray/tune/env_runners/agent/episode_returns_mean/agent_1
+    ray/tune/env_runners/agent/episode_returns_mean/agent_2
+        Meaning: These graphs show the average total reward received by each individual agent (agent 0, agent 1, agent 2) at the end of each episode during training. In the simple_spread environment, rewards are often negative (penalties) for not spreading out efficiently or for collisions, and positive for successfully covering landmarks.
+        What to look for: You want these values to increase over time (become less negative or more positive). A rising trend indicates that your agents are learning to achieve the environment's goals more effectively. If they are consistently very negative or flat, the agents are not learning well.
+
+Loss Metrics (Policy & Value Function)
+
+These graphs tell you about the stability and effectiveness of your neural network's training updates.
+
+    ray/tune/learners/shared_policy/policy_loss
+        Meaning: This represents the loss of the agent's policy network. The policy network learns to choose actions. In PPO, this loss function is designed to maximize the expected reward while preventing the new policy from deviating too much from the old one (using a "clipping" mechanism).
+        What to look for: You generally want this loss to decrease over time, indicating that the policy is successfully learning to improve its actions. However, it can often fluctuate quite a bit, which is normal for reinforcement learning. Large, erratic spikes could signal training instability.
+    ray/tune/learners/shared_policy/vf_loss
+        Meaning: This is the loss of the value function network (critic). The value function estimates the expected future cumulative reward from a given state. It helps the policy learn by providing a baseline for its actions.
+        What to look for: This loss should steadily decrease over time, indicating that the value function is becoming more accurate at predicting future rewards. A stable, decreasing trend here is a good sign for training.
+    ray/tune/learners/shared_policy/vf_loss_unclipped
+        Meaning: This is similar to vf_loss but without the "clipping" mechanism applied. PPO uses clipping on the value function updates to stabilize training, similar to the policy. This graph shows the loss before that clipping is applied.
+        What to look for: It's usually tracked alongside vf_loss for debugging. You'd expect similar trends to vf_loss, but comparing them can sometimes reveal if the clipping is significantly impacting the updates.
+
+Regularization & Exploration Metrics
+
+These graphs provide insights into the training process and how the agent explores the environment.
+
+    ray/tune/learners/shared_policy/entropy
+        Meaning: Entropy measures the randomness or diversity of the agent's actions. High entropy means the agent explores more by trying a wider range of actions. Low entropy means the agent is more confident and deterministic in its actions (exploits its learned knowledge).
+        What to look for: You typically want entropy to start high and then gradually decrease as training progresses. This indicates that the agent is exploring initially and then becoming more confident in its optimal actions. If it drops too quickly, the agent might get stuck in a suboptimal solution. If it stays too high, the agent might not be converging.
+    ray/tune/learners/shared_policy/mean_kl_loss
+        Meaning: This is the Kullback-Leibler (KL) divergence between the new policy and the old policy. PPO aims to take the largest possible improvement step at each iteration while ensuring the new policy doesn't stray too far from the old one.
+        What to look for: PPO tries to keep this value within a certain range (controlled by kl_coeff). You want it to be small and stable, indicating that policy updates are not too drastic, which helps prevent performance collapse.
+    ray/tune/learners/shared_policy/curr_kl_coeff
+        Meaning: This is the current coefficient for the KL divergence term in the PPO loss function. PPO often uses an adaptive kl_coeff that increases if the KL divergence goes too high (to penalize large policy changes more) and decreases if it's too low (to allow larger changes).
+        What to look for: Observe how this value changes. If it's constantly spiking, it means the policy is struggling to make stable updates. If it stabilizes at a low value, it suggests the policy is learning effectively within PPO's constraints.

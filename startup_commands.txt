@@ -1,0 +1,14 @@
+Open your terminal and cd into your project:
+cd path/to/prosocial_marl
+
+Activate the virtual environment:
+source venv/bin/activate
+
+(Optional) Launch VS Code from the terminal so it uses the right interpreter:
+code .
+
+TENSORBOARD
+Open another terminal for tensorboard and make sure virtual environment is active, then use: 
+cd /Users/tegan/Documents/GitHub/prosocial_marl/experiment/
+tensorboard --logdir=run_data
+You can view the most relevant graphs with this regex: .*episode_reward_mean|.*policy_loss|.*vf_loss|.*entropy|.*kl|.*episode_returns_mean/agent_

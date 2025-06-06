@@ -1,0 +1,30 @@
+Here's a breakdown of what the script does:
+
+train_simple_spread_rllib.py
+
+This script is responsible for setting up and running a reinforcement learning training experiment using the Ray RLlib library.
+
+    Environment Setup:
+        It defines and registers a PettingZoo environment called "simple_spread_v3" (from the mpe2 library). This environment likely simulates a multi-agent particle environment where agents need to spread out.
+        It configures the environment to have 3 agents (N_AGENTS = 3) and uses discrete actions.
+    RLlib PPO Configuration:
+        It sets up a PPO (Proximal Policy Optimization) algorithm configuration, which is a popular reinforcement learning algorithm.
+        Key training parameters are defined, including:
+            gamma (discount factor): 0.99, indicating a focus on long-term rewards.
+            lr (learning rate): 5e-4.
+            num_epochs: 10.
+            minibatch_size: 128.
+            train_batch_size: 2048.
+            model: A neural network with two hidden layers of 64 units each.
+        It specifies a "shared_policy" where all agents in the multi-agent environment will use the same policy.
+    Training Execution:
+        Initializes Ray, a framework for distributed computing.
+        Builds the PPO trainer with the defined configuration.
+        Starts the training process using tune.run, a Ray Tune function for experiment management.
+        The training runs for a specified number of TRAINING_ITERATIONS (50 in this case).
+        Checkpoints are saved every 10 iterations (CHECKPOINT_FREQ = 10) and at the end of training.
+        Training results and progress are automatically logged by Ray Tune, including a progress.csv file within the experiment's output directory.
+    Automatic Data Saving Trigger:
+        After the training completes, it automatically calls the save_training_data.py script as a subprocess.
+        It passes the EXPERIMENT_NAME ("simple_spread_baseline") as a command-line argument to the saving script.
+        This ensures that the training data is processed and saved immediately after the training run finishes.
